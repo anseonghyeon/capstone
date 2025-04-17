@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스터디메이트 - 로그인 & 게시판</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts에서 Noto Sans 불러오기 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #275da6, #275da6); /* 짙은 파란색 배경 */
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* 배경 그래픽 요소 */
+    .background-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    .circle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      animation: float 8s infinite ease-in-out;
+    }
+    .circle:nth-child(1) { width: 150px; height: 150px; top: 5%; left: 10%; }
+    .circle:nth-child(2) { width: 100px; height: 100px; top: 50%; left: 80%; }
+    .circle:nth-child(3) { width: 120px; height: 120px; top: 70%; left: 25%; }
+    .circle:nth-child(4) { width: 180px; height: 180px; top: 20%; left: 70%; }
+    
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 0.8; }
+      50% { transform: translateY(-30px); opacity: 0.6; }
+      100% { transform: translateY(0); opacity: 0.8; }
+    }
+    
+    .banner-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .banner {
+      background: linear-gradient(135deg, #f37022,#275da6); /* 파란색과 오렌지색의 그라데이션 */
+      color: white;
+      padding: 20px 50px;
+      font-size: 32px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 15px;
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+      transform: perspective(600px) rotateX(8deg);
+    }
+    .banner i {
+      margin-right: 12px;
+      font-size: 36px;
+    }
+    .container {
+      width: 360px;
+      padding: 35px;
+      background: white; /* 흰색 배경 */
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+      text-align: center;
+      transition: all 0.3s ease-in-out;
+    }
+    .container:hover {
+      transform: translateY(-6px);
+    }
+    h2 {
+      margin-bottom: 22px;
+      color: #275da6; /* 짙은 파란색 사용 */
+    }
+    input, button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 14px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input {
+      border: 1px solid #bbb;
+    }
+    button {
+      background-color: #f37022; /* 오렌지색 사용 */
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #275da6; /* 짙은 파란색으로 강조 */
+    }
+  </style>
+</head>
+<body>
+  <div class="background-elements">
+    <div class="circle"></div>
+    
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+  </div>
+  
+  <div class="banner-container">
+    <div class="banner"><i class="fas fa-users"></i> 강대스터디메이트</div>
+  </div>
+  <div class="container" id="login-container">
+    <h2>로그인</h2>
+    <input type="text" id="username" placeholder="아이디">
+    <input type="password" id="password" placeholder="비밀번호">
+    <button onclick="login()">로그인</button>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('username').value;
+      if (username) {
+        document.getElementById('login-container').style.display = 'none';
+        alert('로그인 성공! 게시판으로 이동합니다.');
+      } else {
+        alert('아이디를 입력하세요!');
+      }
+    }
+  </script>
+</body>
+</html>
+
+

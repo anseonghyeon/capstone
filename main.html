@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>스터디메이트 - 게시판</title>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+  />
+  <!-- Google Fonts에서 Noto Sans 불러오기 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #275da6 70%, #ffffff 30%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .user-profile {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      background-color: #ffffff;
+      padding: 8px 15px;
+      border-radius: 25px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-profile i {
+      font-size: 40px;
+      color: #333;
+      margin-right: 10px;
+    }
+
+    .user-profile .username {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .banner {
+      background: linear-gradient(135deg, #275da6, #f37022);
+      color: white;
+      padding: 20px 50px;
+      font-size: 32px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 15px;
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .board-container {
+      width: 80%;
+      max-width: 800px;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .post {
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .post:last-child {
+      border-bottom: none;
+    }
+
+    .post h3 {
+      margin: 0;
+      color: #333;
+    }
+
+    .post p {
+      color: #555;
+    }
+
+    .post button {
+      background-color: #275da6;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .post button:hover {
+      background-color: #f37022;
+    }
+
+    /* 글작성하기 버튼: 중앙 정렬 및 고정 너비 설정 */
+    .write-post-btn {
+      width: 300px;
+      margin: 0 auto 20px auto;
+      display: block;
+      background-color: #275da6;
+      color: white;
+      border: 2px solid #275da6;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .write-post-btn:hover {
+      background-color: #f37022;
+      border-color: #f37022;
+    }
+
+    /* 애니메이션 효과를 위한 초기 상태 */
+    .write-post-container {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+    }
+
+    /* 버튼 클릭 시 active 클래스를 추가하여 펼쳐짐 */
+    .write-post-container.active {
+      max-height: 500px;
+      opacity: 1;
+    }
+
+    .write-post-container input,
+    .write-post-container textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #333;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .write-post-container input {
+      margin-bottom: 10px;
+    }
+
+    .write-post-container button {
+      background-color: #275da6;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    .write-post-container button:hover {
+      background-color: #f37022;
+    }
+  </style>
+</head>
+<body>
+  <div class="user-profile">
+    <i class="fas fa-user"></i>
+    <div class="username">사용자 이름</div>
+  </div>
+
+  <div class="banner">📢 스터디 모집 게시판</div>
+  <div class="board-container">
+    <!-- 중앙 정렬된 고정 너비 버튼 -->
+    <button class="write-post-btn" onclick="toggleWritePostForm()">
+      글 작성하기
+    </button>
+
+    <!-- 글 작성 폼 (초기에는 접혀있음) -->
+    <div class="write-post-container" id="write-post-form">
+      <h3>새 글 작성</h3>
+      <input type="text" id="post-title" placeholder="제목을 입력하세요">
+      <textarea id="post-content" rows="4" placeholder="본문을 입력하세요"></textarea>
+      <button onclick="submitPost()">제출</button>
+    </div>
+
+    <div class="post">
+      <h3>프로그래밍 스터디 모집</h3>
+      <p>백엔드 개발을 함께 공부할 팀원을 찾습니다. 관심 있으신 분은 가입하세요!</p>
+      <button>가입하기</button>
+    </div>
+    <div class="post">
+      <h3>영어 회화 스터디</h3>
+      <p>매주 2회 온라인으로 진행하는 영어 회화 스터디원 모집합니다.</p>
+      <button>가입하기</button>
+    </div>
+    <div class="post">
+      <h3>알고리즘 문제풀이 모임</h3>
+      <p>매일 한 문제씩 풀면서 알고리즘 실력을 키워보아요.</p>
+      <button>가입하기</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleWritePostForm() {
+      const form = document.getElementById('write-post-form');
+      form.classList.toggle('active');
+    }
+
+    function submitPost() {
+      const title = document.getElementById('post-title').value;
+      const content = document.getElementById('post-content').value;
+
+      if (title && content) {
+        alert('글이 제출되었습니다!');
+        document.getElementById('post-title').value = '';
+        document.getElementById('post-content').value = '';
+        document.getElementById('write-post-form').classList.remove('active');
+      } else {
+        alert('제목과 본문을 모두 입력해주세요.');
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
